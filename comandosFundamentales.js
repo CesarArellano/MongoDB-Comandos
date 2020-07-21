@@ -14,6 +14,7 @@
 "db.products.update({filter},{$addToSet/$push/$pop/$pull//$pullAll:{field: 'newData'}},{options})": "Actualiza campos de acuerdo al filtro al tipo de actualización desginado por el operador (vectores)"
 "db.products.remove({filter})": "Elimina registros de acuerdo al filtro (si no hay filtro borra todo)"
 "db.peliculas.find({'year': {$gte: 1985, $lt:1990}})":"Busca películas del rango 1985 - 1989"
+OPERADORES DE COMPARACIÓN
 {   
     "$eq": "equal - igual",
     "$gt": "greater than / mayor que",
@@ -128,7 +129,6 @@ db.peliculas.updateOne(
 
 db.peliculas.updateMany({rated:null},{$unset: {rated: ""}})
 /*
-"db.peliculas.find({rated:{$exists:true/false}})": "Operador $exists -> Solo si existe o no el campo, muestra los registros"
 "db.peliculas.updateOne({title:'The Martian'},{$push: {contador: 1223}},{upsert:true})": "Upsert = Update + Insert: true, podrá crear el documento aunque no exista"
 "db.peliculas.replaceOne(filter,replacement,options)": "Reemplaza documentos, no puede contener operadores de actualización"
 */
@@ -158,3 +158,13 @@ db.peliculas.deleteOne({title: "Django Unchained"})
 // DELETE MANY AND REMOVE
 db.peliculas.deleteMany({director: "Quentin Tarantino"})
 db.peliculas.remove({director: "Quentin Tarantino"})
+
+/*S
+OPERADORES DE ELEMENTOS
+{   
+    "$exists": "equal - igual",
+    "db.peliculas.find({rated:{$exists:true/false}})": "Operador $exists -> Solo si existe o no el campo, muestra los registros en true muestra aunque sean null",
+    "$type": "Muestra aquellos documentos, donde el campo tenga un determinado tipo de dato",
+    "db.peliculas.find({title:{$type:'string'}})": "Tipos de datos admitidos ('string','int','double','long','object','array','undefined','objectId','bool','date','null','regex','dbPointer','javascript','symbol','timestamp','decimal','minKey','maxKey')",
+}
+*/
