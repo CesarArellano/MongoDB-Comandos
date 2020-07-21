@@ -1,0 +1,96 @@
+{"show dbs": "Mostrar bases de datos"}
+{"use 'name DB'": "Crear una nueva BD o para moverse a una BD existente"}
+{"db": "Saber en qué base de datos estoy"}
+{"db.dropDatabase()": "Eliminar BD en la que se esté posicionado"}
+{"db.products.insert({'name': 'laptop})": "Crea la colección products si está no existe e inserta el registro mencionado"}
+{"db.createCollection('products')": "Crea una nueva colección llamada products"}
+{"db.products.drop()": "Elimina la colección indicada"}
+{"db.products.find({filter},{projections})": "Muestra documentos/ registros dependiendo del filtro y proyecciones"}
+{"db.products.find().pretty()": "Muestra los registros de una manera más ordenada"}
+{"db.products.find().count()": "Retorna la cantidad de filas encontradas"}
+{"db.products.find().limit(numRows)":"Retorna registros según el límite designado"}
+{"db.products.find().forEach(products =>  print('Product Name:' + products.name))":"Imprime los resultados indicados, con un forEach"}
+{"db.products.update({filter},{$set/$unset/$rename/$min/$max/$inc:{field: 'newData'}},{options})": "Actualiza campos de acuerdo al filtro al tipo de actualización desginado por el operador (campos)"}
+{"db.products.update({filter},{$addToSet/$push/$pop/$pull//$pullAll:{field: 'newData'}},{options})": "Actualiza campos de acuerdo al filtro al tipo de actualización desginado por el operador (vectores)"}
+{"db.products.remove({filter})": "Elimina registros de acuerdo al filtro (si no hay filtro borra todo)"}
+{"db.peliculas.find({'year': {$gte: 1985, $lt:1990}})":"Busca películas del rango 1985 - 1989"}
+{   
+    "$eq": "equal - igual",
+    "$gt": "greater than / mayor que",
+    "$gte": "greater than equal - mayor o igual que ",
+    "$lt": "low than - menor que",
+    "$lte": "low than equal - menor o igual que",
+    "$ne": "not equal - distinto",
+    "$in": "in - dentro de (poner en formato array: {$in: ['impresoras']})",
+    "$nin": "not in - no dentro de (poner en formato array)"
+}
+db.articulos.find()
+db.articulos.find({"rubro": {$nin:["impresora"]}})
+db.articulos.find({"rubro": {$ne:"impresora"}})
+db.articulos.find({"rubro": {$in:["mouse"]}})
+db.articulos.find({"rubro": {$eq:"mouse"}})
+db.articulos.find({"precio": {$gte: 5000}})
+db.articulos.find({"rubro": {$eq:"impresora"},"precio":{$gte:3500}})
+db.articulos.find({"stock":{$gte:0,$lte:4}})
+
+db.peliculas.insertMany(
+    [
+        {        
+            "_id": "tt0110912",
+            "title": "Pulp Fiction",
+            "year": 1994,
+            "director": "Quentin Tarantino"
+        },
+        {
+            "_id": "tt0266697",
+            "title": "Kill Bill: Vol. 1",
+            "year": 2003,
+            "director": "Quentin Tarantino"
+        },
+        {        
+            "_id": "tt0110912",
+            "title": "Pulp Fiction",
+            "year": 1994,
+            "director": "Quentin Tarantino"
+        },
+        {
+            "_id": "tt1853728",
+            "title": "Django Unchained",
+            "year": 2012,
+            "director": "Quentin Tarantino"
+        }
+    ],
+    {
+        "ordered": true
+    }
+)
+
+db.peliculas.updateOne({title:"The Martian"},{$push: {
+    reviews:{
+        rating: 4.5,
+        reviewer: "César Arellano",
+        text: "The best movie of the year"
+    }
+}});
+
+db.peliculas.updateOne({title:"The Martian"},{$pop: {
+    reviews: -1
+}});
+
+db.peliculas.updateOne({title:"The Martian"},{$set: 
+    {
+        contador: [1,2,3,4,5]
+    }
+});
+db.peliculas.updateOne({title:"The Martian"},{$pop: 
+    {
+        contador: -1
+    }
+});
+{"-1": "Elimina el primer elemento del vector", "1": "Para eliminar el último elemento"}
+{"$pull: numero/cadena / $pull: {$gte: numero}": "Elemento en especifico (no es la posición del arreglo)"}
+db.peliculas.updateOne({title:"The Martian"},{$pull: 
+    {
+        contador: 4
+    }
+});
