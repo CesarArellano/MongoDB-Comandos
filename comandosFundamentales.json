@@ -65,6 +65,10 @@ db.peliculas.insertMany(
     }
 )
 
+db.peliculas.updateOne({title:"The Martian"},{$addToSet: {
+    actors: "Uma Thurman"
+}});
+
 db.peliculas.updateOne({title:"The Martian"},{$push: {
     reviews:{
         rating: 4.5,
@@ -91,6 +95,34 @@ db.peliculas.updateOne({title:"The Martian"},{$pop:
 {"$pull: numero/cadena / $pull: {$gte: numero}": "Elemento en especifico (no es la posición del arreglo)"}
 db.peliculas.updateOne({title:"The Martian"},{$pull: 
     {
-        contador: 4
+        contador: 2
     }
 });
+
+db.peliculas.updateOne({title:"The Martian"},{$pull: 
+    {
+        contador: {$gte: 3}
+    }
+});
+
+db.peliculas.updateOne({title:"The Martian"},{$pullAll: 
+    {
+        contador: [7,8]
+    }
+})
+{"$pullAll": "Elimina todos los elementos del array que se le indiquen (Aunque haya datos repetidos)"}
+{"$each": "Modificador, modifica los operadores $push y $addToSet para agregar varios elementos para las actualizaciones de un vector"}
+{"{ $push { <field>: { $each [ <v1>,<v2>, ...] } } }": "Modificador, modifica los operadores $push y $sddToSet para agregar varios elementos para las actualizaciones de un vector", "$position: number": "Modificador para insertar en una determinada posición"}
+
+db.peliculas.updateOne(
+    {title: "The Martian"},
+    {$push: {
+        contador: {
+            $each:[7,8,9],
+            $position: 1
+        }
+    }
+})
+
+db.peliculas.updateMany({rated:null},{$unset: {rated: ""}})
+{"db.peliculas.find({rated:{$exists:true/false}})": "Solo si existe o no el campo, muestra los registros"}
