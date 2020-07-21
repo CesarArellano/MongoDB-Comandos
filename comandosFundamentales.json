@@ -126,3 +126,23 @@ db.peliculas.updateOne(
 
 db.peliculas.updateMany({rated:null},{$unset: {rated: ""}})
 {"db.peliculas.find({rated:{$exists:true/false}})": "Solo si existe o no el campo, muestra los registros"}
+{"db.peliculas.updateOne({title:'The Martian'},{$push: {contador: 1223}},{upsert:true})": "Upsert = Update + Insert: true, podrá crear el documento aunque no exista"}
+{"db.peliculas.replaceOne(filter,replacement,options)": "Reemplaza documentos, no puede contener operadores de actualización"}
+db.peliculas.replaceOne(
+    {title: "Django Unchained"}, 
+    {
+        "title":"Django Unchained",
+        "director":"Quentin Tarantino",
+        "cast": ["Jamie Foxx","Christoph Waltz","Leonardo  DiCaprio","Kerry Washington"]
+    }
+)
+// Con variables
+let filter = {title: "Django Unchained"}
+let doc = {
+    "title":"Django Unchained",
+    "director":"Quentin Tarantino",
+    "cast": ["Jamie Foxx","Christoph Waltz","Leonardo  DiCaprio","Kerry Washington","César Arellano"]
+}
+db.peliculas.replaceOne(filter,doc)
+
+let findAll = db.peliculas.find().pretty()
