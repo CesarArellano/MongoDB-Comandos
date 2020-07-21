@@ -1,19 +1,19 @@
-{"show dbs": "Mostrar bases de datos"}
-{"use 'name DB'": "Crear una nueva BD o para moverse a una BD existente"}
-{"db": "Saber en qué base de datos estoy"}
-{"db.dropDatabase()": "Eliminar BD en la que se esté posicionado"}
-{"db.products.insert({'name': 'laptop})": "Crea la colección products si está no existe e inserta el registro mencionado"}
-{"db.createCollection('products')": "Crea una nueva colección llamada products"}
-{"db.products.drop()": "Elimina la colección indicada"}
-{"db.products.find({filter},{projections})": "Muestra documentos/ registros dependiendo del filtro y proyecciones"}
-{"db.products.find().pretty()": "Muestra los registros de una manera más ordenada"}
-{"db.products.find().count()": "Retorna la cantidad de filas encontradas"}
-{"db.products.find().limit(numRows)":"Retorna registros según el límite designado"}
-{"db.products.find().forEach(products =>  print('Product Name:' + products.name))":"Imprime los resultados indicados, con un forEach"}
-{"db.products.update({filter},{$set/$unset/$rename/$min/$max/$inc:{field: 'newData'}},{options})": "Actualiza campos de acuerdo al filtro al tipo de actualización desginado por el operador (campos)"}
-{"db.products.update({filter},{$addToSet/$push/$pop/$pull//$pullAll:{field: 'newData'}},{options})": "Actualiza campos de acuerdo al filtro al tipo de actualización desginado por el operador (vectores)"}
-{"db.products.remove({filter})": "Elimina registros de acuerdo al filtro (si no hay filtro borra todo)"}
-{"db.peliculas.find({'year': {$gte: 1985, $lt:1990}})":"Busca películas del rango 1985 - 1989"}
+/* "show dbs": "Mostrar bases de datos"
+"use 'name DB'": "Crear una nueva BD o para moverse a una BD existente"
+"db": "Saber en qué base de datos estoy"
+"db.dropDatabase()": "Eliminar BD en la que se esté posicionado"
+"db.products.insert({'name': 'laptop})": "Crea la colección products si está no existe e inserta el registro mencionado"
+"db.createCollection('products')": "Crea una nueva colección llamada products"
+"db.products.drop()": "Elimina la colección indicada"
+"db.products.find({filter},{projections})": "Muestra documentos/ registros dependiendo del filtro y proyecciones"
+"db.products.find().pretty()": "Muestra los registros de una manera más ordenada"
+"db.products.find().count()": "Retorna la cantidad de filas encontradas"
+"db.products.find().limit(numRows)":"Retorna registros según el límite designado"
+"db.products.find().forEach(products =>  print('Product Name:' + products.name))":"Imprime los resultados indicados, con un forEach"
+"db.products.update({filter},{$set/$unset/$rename/$min/$max/$inc:{field: 'newData'}},{options})": "Actualiza campos de acuerdo al filtro al tipo de actualización desginado por el operador (campos)"
+"db.products.update({filter},{$addToSet/$push/$pop/$pull//$pullAll:{field: 'newData'}},{options})": "Actualiza campos de acuerdo al filtro al tipo de actualización desginado por el operador (vectores)"
+"db.products.remove({filter})": "Elimina registros de acuerdo al filtro (si no hay filtro borra todo)"
+"db.peliculas.find({'year': {$gte: 1985, $lt:1990}})":"Busca películas del rango 1985 - 1989"
 {   
     "$eq": "equal - igual",
     "$gt": "greater than / mayor que",
@@ -24,6 +24,7 @@
     "$in": "in - dentro de (poner en formato array: {$in: ['impresoras']})",
     "$nin": "not in - no dentro de (poner en formato array)"
 }
+*/
 db.articulos.find()
 db.articulos.find({"rubro": {$nin:["impresora"]}})
 db.articulos.find({"rubro": {$ne:"impresora"}})
@@ -91,8 +92,8 @@ db.peliculas.updateOne({title:"The Martian"},{$pop:
         contador: -1
     }
 });
-{"-1": "Elimina el primer elemento del vector", "1": "Para eliminar el último elemento"}
-{"$pull: numero/cadena / $pull: {$gte: numero}": "Elemento en especifico (no es la posición del arreglo)"}
+// "-1": "Elimina el primer elemento del vector", "1": "Para eliminar el último elemento"
+// "$pull: numero/cadena / $pull: {$gte: numero}": "Elemento en especifico (no es la posición del arreglo)"
 db.peliculas.updateOne({title:"The Martian"},{$pull: 
     {
         contador: 2
@@ -110,10 +111,11 @@ db.peliculas.updateOne({title:"The Martian"},{$pullAll:
         contador: [7,8]
     }
 })
-{"$pullAll": "Elimina todos los elementos del array que se le indiquen (Aunque haya datos repetidos)"}
-{"$each": "Modificador, modifica los operadores $push y $addToSet para agregar varios elementos para las actualizaciones de un vector"}
-{"{ $push { <field>: { $each [ <v1>,<v2>, ...] } } }": "Modificador, modifica los operadores $push y $sddToSet para agregar varios elementos para las actualizaciones de un vector", "$position: number": "Modificador para insertar en una determinada posición"}
-
+/* "$pullAll": "Elimina todos los elementos del array que se le indiquen (Aunque haya datos repetidos)"
+"$each": "Modificador, modifica los operadores $push y $addToSet para agregar varios elementos para las actualizaciones de un vector"
+"{ $push { <field>: { $each [ <v1>,<v2>, ...] } } }": "Modificador, modifica los operadores $push y $sddToSet para agregar varios elementos para las actualizaciones de un vector",
+"$position: number": "Modificador para insertar en una determinada posición"
+*/
 db.peliculas.updateOne(
     {title: "The Martian"},
     {$push: {
@@ -125,9 +127,11 @@ db.peliculas.updateOne(
 })
 
 db.peliculas.updateMany({rated:null},{$unset: {rated: ""}})
-{"db.peliculas.find({rated:{$exists:true/false}})": "Solo si existe o no el campo, muestra los registros"}
-{"db.peliculas.updateOne({title:'The Martian'},{$push: {contador: 1223}},{upsert:true})": "Upsert = Update + Insert: true, podrá crear el documento aunque no exista"}
-{"db.peliculas.replaceOne(filter,replacement,options)": "Reemplaza documentos, no puede contener operadores de actualización"}
+/*
+"db.peliculas.find({rated:{$exists:true/false}})": "Operador $exists -> Solo si existe o no el campo, muestra los registros"
+"db.peliculas.updateOne({title:'The Martian'},{$push: {contador: 1223}},{upsert:true})": "Upsert = Update + Insert: true, podrá crear el documento aunque no exista"
+"db.peliculas.replaceOne(filter,replacement,options)": "Reemplaza documentos, no puede contener operadores de actualización"
+*/
 db.peliculas.replaceOne(
     {title: "Django Unchained"}, 
     {
@@ -146,3 +150,11 @@ let doc = {
 db.peliculas.replaceOne(filter,doc)
 
 let findAll = db.peliculas.find().pretty()
+
+// DELETE ONE
+db.peliculas.deleteOne({_id: "tt0110912"})
+db.peliculas.deleteOne({title: "Django Unchained"})
+
+// DELETE MANY AND REMOVE
+db.peliculas.deleteMany({director: "Quentin Tarantino"})
+db.peliculas.remove({director: "Quentin Tarantino"})
