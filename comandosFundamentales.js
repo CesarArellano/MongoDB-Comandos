@@ -194,13 +194,16 @@ OPERADORES PARA VECTORES
 {
     • $all - Solo documentos que contienen el campo vector con todos los valores
     { campo: {$all: [valor1, valor2, ...] } }
-    db.peliculas.find({countries:{$all: ['USA','Spain']}},{_id:0,title:1,countries:1})
     - Pueden tener más valores, nunca menos
     - No tienen que estar en el mismo orden
+    Ejemplo:
+    db.peliculas.find({countries:{$all: ['USA','Spain']}},{_id:0,title:1,countries:1})
+    
     
     • $size - Solo documentos que contienen el campo vector con el tamaño indicado.
     { campo: { $size: 2 } } )
     - no acepta rangos de valores. 
+    Ejemplo:
     db.peliculas.find({countries:{$size: 2}},{_id:0,title:1,countries:1})
 
     • $elemMatch - Solo Documentos que contienen un elemento del campo vector que coincide con todas las condiciones especificadas 
@@ -221,4 +224,20 @@ OPERADORES PARA VECTORES
     db.peliculas.find({boxOffice: {$elemMatch: {"pais":"España","ingreso":{$gt:20}}}}) Checa el ingreso de España y no muestra nada
     db.peliculas.find({boxOffice: {$elemMatch: {"pais":"España","ingreso":{$gt:19}}}}) Checa el ingreso de España y muestra el documento
 }
+OPERADORES DE EVALUACIÓN
+{
+    • $regex  // Limita documentos de acuerdo a la expresión regular indicada
+    {campo: { $regex: /pattern/ options } }
+    / / para delimitar la expresión regular
+    ^   significa comenzar desde el principio 
+    .   comodín (cualquier carácter) 
+    *   cualquier carácter varias veces
+}
 */
+db.peliculas.find({},{_id:0,title:1,"awards.text":1})
+//Busca las peliculas en el campo texto del objeto awards que contengan "Won ...."
+db.peliculas.find({"awards.text":{$regex: /^Won.* /}},{_id:0,title:1,"awards.text":1})
+//Busca las peliculas en el campo texto del objeto awards que contengan "Won 1 Oscar...."
+db.peliculas.find({"awards.text":{$regex: /^Won 1 Oscar.* /}},{_id:0,title:1,"awards.text":1})
+//Busca las peliculas en el campo texto del objeto awards que contengan "won..." no aparecerá nada porque se diferencia las mayúsculas y minúsculas.
+db.peliculas.find({"awards.text":{$regex: /^won .* /}},{_id:0,title:1,"awards.text":1})
