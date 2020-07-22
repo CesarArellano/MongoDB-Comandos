@@ -172,11 +172,10 @@ OPERADORES LÓGICOS
 {   
     • $or - Une las cláusulas con un OR lógico 
     { $or: [ { selector1 }, { selector2 }, ... ] }
-    db.peliculas.find({$or: [{director: 'Steven Spielberg'}, {director:'Zack Snyder'}]},{_id:0,title:1,director:1})
-    db.peliculas.find({$or: [{director: 'Steven Spielberg'}, {runtime: {$gte: 120}}]},{_id:0,title:1,runtime:1,director:1})
+
     • $nor - Une cláusulas de consulta con un NOR lógico 
     { $nor: [ { selector1 }, { selector2 }, ... ] }
-    db.peliculas.find({$nor: [{director: 'Steven Spielberg'}, {director:'Zack Snyder'}]},{_id:0,title:1,director:1})
+    
     • $and - Une cláusulas de consulta con un AND lógico 
     { $and: [ { selector1 }, { selector2 }, ... ] }
     campo: null (Muestra los que tienen null y los que no existen)
@@ -189,26 +188,39 @@ OPERADORES LÓGICOS
     • $not - Invierte el efecto de una expresión de consulta.
     { campo: { $not: { selector } } }
 }
+*/
+//Ejemplo OR:
 
+    db.peliculas.find({$or: [{director: 'Steven Spielberg'}, {director:'Zack Snyder'}]},{_id:0,title:1,director:1})
+    db.peliculas.find({$or: [{director: 'Steven Spielberg'}, {runtime: {$gte: 120}}]},{_id:0,title:1,runtime:1,director:1})
+//Ejemplo NOR:
+    db.peliculas.find({$nor: [{director: 'Steven Spielberg'}, {director:'Zack Snyder'}]},{_id:0,title:1,director:1})
+
+//Ejemplo AND:
+    db.peliculas.find({$and: [{director: 'Steven Spielberg'}, {runtime: {$gte: 120}}]},{_id:0,title:1,runtime:1,director:1})
+    db.peliculas.find({$and: [{year: null}, {year: {$exists:true}}]},{_id:0,title:1,runtime:1,director:1})
+
+/*
 OPERADORES PARA VECTORES
 {
     • $all - Solo documentos que contienen el campo vector con todos los valores
     { campo: {$all: [valor1, valor2, ...] } }
     - Pueden tener más valores, nunca menos
     - No tienen que estar en el mismo orden
-    Ejemplo:
-    db.peliculas.find({countries:{$all: ['USA','Spain']}},{_id:0,title:1,countries:1})
-    
     
     • $size - Solo documentos que contienen el campo vector con el tamaño indicado.
     { campo: { $size: 2 } } )
     - no acepta rangos de valores. 
-    Ejemplo:
-    db.peliculas.find({countries:{$size: 2}},{_id:0,title:1,countries:1})
 
     • $elemMatch - Solo Documentos que contienen un elemento del campo vector que coincide con todas las condiciones especificadas 
     { campo: { $elemMatch: { selector1 , selector2 , ... } } }
-    Ejemplo:
+}
+*/
+//Ejemplo $all:
+    db.peliculas.find({countries:{$all: ['USA','Spain']}},{_id:0,title:1,countries:1})
+//Ejemplo $size:
+    db.peliculas.find({countries:{$size: 2}},{_id:0,title:1,countries:1})
+//Ejemplo $elemMatch:
     db.peliculas.insertOne({
         title:'prueba_vectores',
         year:2020,
@@ -220,10 +232,10 @@ OPERADORES PARA VECTORES
             {pais:"Perú",ingreso:19.8}
         ]
     })
-    db.peliculas.find({"boxOffice.pais":"España","boxOffice.ingreso":{$gt:20}}) Checa el ingreso en general
-    db.peliculas.find({boxOffice: {$elemMatch: {"pais":"España","ingreso":{$gt:20}}}}) Checa el ingreso de España y no muestra nada
-    db.peliculas.find({boxOffice: {$elemMatch: {"pais":"España","ingreso":{$gt:19}}}}) Checa el ingreso de España y muestra el documento
-}
+    db.peliculas.find({"boxOffice.pais":"España","boxOffice.ingreso":{$gt:20}}) // Checa el ingreso en general
+    db.peliculas.find({boxOffice: {$elemMatch: {"pais":"España","ingreso":{$gt:20}}}}) // Checa el ingreso de España y no muestra nada
+    db.peliculas.find({boxOffice: {$elemMatch: {"pais":"España","ingreso":{$gt:19}}}}) // Checa el ingreso de España y muestra el documento
+/*
 OPERADORES DE EVALUACIÓN
 {
     • $regex  // Limita documentos de acuerdo a la expresión regular indicada
