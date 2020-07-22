@@ -189,4 +189,36 @@ OPERADORES LÓGICOS
     • $not - Invierte el efecto de una expresión de consulta.
     { campo: { $not: { selector } } }
 }
+
+OPERADORES PARA VECTORES
+{
+    • $all - Solo documentos que contienen el campo vector con todos los valores
+    { campo: {$all: [valor1, valor2, ...] } }
+    db.peliculas.find({countries:{$all: ['USA','Spain']}},{_id:0,title:1,countries:1})
+    - Pueden tener más valores, nunca menos
+    - No tienen que estar en el mismo orden
+    
+    • $size - Solo documentos que contienen el campo vector con el tamaño indicado.
+    { campo: { $size: 2 } } )
+    - no acepta rangos de valores. 
+    db.peliculas.find({countries:{$size: 2}},{_id:0,title:1,countries:1})
+
+    • $elemMatch - Solo Documentos que contienen un elemento del campo vector que coincide con todas las condiciones especificadas 
+    { campo: { $elemMatch: { selector1 , selector2 , ... } } }
+    Ejemplo:
+    db.peliculas.insertOne({
+        title:'prueba_vectores',
+        year:2020,
+        boxOffice: [
+            {pais:"Mexico",ingreso:228.4},
+            {pais:"España",ingreso:19.6},
+            {pais:"Argentina",ingreso:33.9},
+            {pais:"Colombia",ingreso:16.2},
+            {pais:"Perú",ingreso:19.8}
+        ]
+    })
+    db.peliculas.find({"boxOffice.pais":"España","boxOffice.ingreso":{$gt:20}}) Checa el ingreso en general
+    db.peliculas.find({boxOffice: {$elemMatch: {"pais":"España","ingreso":{$gt:20}}}}) Checa el ingreso de España y no muestra nada
+    db.peliculas.find({boxOffice: {$elemMatch: {"pais":"España","ingreso":{$gt:19}}}}) Checa el ingreso de España y muestra el documento
+}
 */
