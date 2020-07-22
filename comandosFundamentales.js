@@ -40,25 +40,25 @@ db.peliculas.insertMany(
         {        
             "_id": "tt0110912",
             "title": "Pulp Fiction",
-            "year": 1994,
+            "year": null,
             "director": "Quentin Tarantino"
         },
         {
             "_id": "tt0266697",
             "title": "Kill Bill: Vol. 1",
-            "year": 2003,
+            "year": null,
             "director": "Quentin Tarantino"
         },
         {        
             "_id": "tt0110912",
             "title": "Pulp Fiction",
-            "year": 1994,
+            "year": null,
             "director": "Quentin Tarantino"
         },
         {
             "_id": "tt1853728",
             "title": "Django Unchained",
-            "year": 2012,
+            "year": null,
             "director": "Quentin Tarantino"
         }
     ],
@@ -159,12 +159,34 @@ db.peliculas.deleteOne({title: "Django Unchained"})
 db.peliculas.deleteMany({director: "Quentin Tarantino"})
 db.peliculas.remove({director: "Quentin Tarantino"})
 
-/*S
+/*
 OPERADORES DE ELEMENTOS
 {   
     "$exists": "equal - igual",
     "db.peliculas.find({rated:{$exists:true/false}})": "Operador $exists -> Solo si existe o no el campo, muestra los registros en true muestra aunque sean null",
     "$type": "Muestra aquellos documentos, donde el campo tenga un determinado tipo de dato",
     "db.peliculas.find({title:{$type:'string'}})": "Tipos de datos admitidos ('string','int','double','long','object','array','undefined','objectId','bool','date','null','regex','dbPointer','javascript','symbol','timestamp','decimal','minKey','maxKey')",
+}
+
+OPERADORES LÓGICOS
+{   
+    • $or - Une las cláusulas con un OR lógico 
+    { $or: [ { selector1 }, { selector2 }, ... ] }
+    db.peliculas.find({$or: [{director: 'Steven Spielberg'}, {director:'Zack Snyder'}]},{_id:0,title:1,director:1})
+    db.peliculas.find({$or: [{director: 'Steven Spielberg'}, {runtime: {$gte: 120}}]},{_id:0,title:1,runtime:1,director:1})
+    • $nor - Une cláusulas de consulta con un NOR lógico 
+    { $nor: [ { selector1 }, { selector2 }, ... ] }
+    db.peliculas.find({$nor: [{director: 'Steven Spielberg'}, {director:'Zack Snyder'}]},{_id:0,title:1,director:1})
+    • $and - Une cláusulas de consulta con un AND lógico 
+    { $and: [ { selector1 }, { selector2 }, ... ] }
+    campo: null (Muestra los que tienen null y los que no existen)
+    campo: {$ne:null} (Muestra sólo los que existen)
+    campo: {$exists:true} (Muestra los que sean null y los que existen)
+    campo: {$exists:false} (Muestra los que no existe el campo)
+    { $and: [{campo:null},{campo: {$exists:true}}] } (Muestra los que son null)
+    db.peliculas.find({$and: [{director: 'Steven Spielberg'}, {runtime: {$gte: 120}}]},{_id:0,title:1,runtime:1,director:1})
+    db.peliculas.find({$and: [{year: null}, {year: {$exists:true}}]},{_id:0,title:1,runtime:1,director:1})
+    • $not - Invierte el efecto de una expresión de consulta.
+    { campo: { $not: { selector } } }
 }
 */
